@@ -1,76 +1,146 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class CharController_Motor : MonoBehaviour {
+public class CharController_Motor : MonoBehaviour
+{
+    public float speed = 10.0f;
+    public float sensitivity = 30.0f;
+    public float WaterHeight = 15.5f;
 
-	public float speed = 10.0f;
-	public float sensitivity = 30.0f;
-	public float WaterHeight = 15.5f;
-	CharacterController character;
-	public GameObject cam;
-	float moveFB, moveLR;
-	float rotX, rotY;
-	public bool webGLRightClickRotation = true;
-	float gravity = -9.8f;
+    private CharacterController character;
 
+    public GameObject cam;
 
-	void Start(){
-		//LockCursor ();
-		character = GetComponent<CharacterController> ();
-		if (Application.isEditor) {
-			webGLRightClickRotation = false;
-			sensitivity = sensitivity * 1.5f;
-		}
-	}
+    private float moveFB;
+    private float moveLR;
 
+    private float rotX;
+    private float rotY;
 
-	void CheckForWaterHeight(){
-		if (transform.position.y < WaterHeight) {
-			gravity = 0f;			
-		} else {
-			gravity = -9.8f;
-		}
-	}
+    public bool webGLRightClickRotation = true;
 
+    private float gravity = -9.8f;
 
+    void Start()
+    {
+        character = GetComponent<CharacterController>();
 
-	void Update(){
-		moveFB = Input.GetAxis ("Horizontal") * speed;
-		moveLR = Input.GetAxis ("Vertical") * speed;
+        if (Application.isEditor)
+        {
+            webGLRightClickRotation = false;
+            sensitivity = sensitivity * 1.5f;
+        }
+    }
 
-		rotX = Input.GetAxis ("Mouse X") * sensitivity;
-		rotY = Input.GetAxis ("Mouse Y") * sensitivity;
+    void CheckForWaterHeight()
+    {
+        if (transform.position.y < WaterHeight)
+        {
+            gravity = 0f;
+        }
+        else
+        {
+            gravity = -9.8f;
+        }
+    }
 
-		//rotX = Input.GetKey (KeyCode.Joystick1Button4);
-		//rotY = Input.GetKey (KeyCode.Joystick1Button5);
+    void Update()
+    {
+        // -------------------------
+        // MOVEMENT - New Input System
+        // -------------------------
 
-		CheckForWaterHeight ();
+        Vector2 input = Vector2.zero;
 
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.aKey.isPressed)
+                input.x -= 1;
 
-		Vector3 movement = new Vector3 (moveFB, gravity, moveLR);
+            if (Keyboard.current.dKey.isPressed)
+                input.x += 1;
 
+            if (Keyboard.current.sKey.isPressed)
+                input.y -= 1;
 
+            if (Keyboard.current.wKey.isPressed)
+                input.y += 1;
+        }
 
-		if (webGLRightClickRotation) {
-			if (Input.GetKey (KeyCode.Mouse0)) {
-				CameraRotation (cam, rotX, rotY);
-			}
-		} else if (!webGLRightClickRotation) {
-			CameraRotation (cam, rotX, rotY);
-		}
-
-		movement = transform.rotation * movement;
-		character.Move (movement * Time.deltaTime);
-	}
-
-
-	void CameraRotation(GameObject cam, float rotX, float rotY){		
-		transform.Rotate (0, rotX * Time.deltaTime, 0);
-		cam.transform.Rotate (-rotY * Time.deltaTime, 0, 0);
-	}
-
-
+        moveLR = input.x * speed;
+        moveFB = input.y * speed;
 
 
+        // -------------------------
+        // MOUSE - New Input System
+        // -------------------------
+
+        rotX = 0f;
+        rotY = 0f;
+
+        if (Mouse.current != null)
+        {
+            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+
+            rotX = mouseDelta.x * sensitivity;
+            rotY = mouseDelta.y * sensitivity;
+        }
+
+
+        // -------------------------
+        // WATER / GRAVITY
+        // -------------------------
+
+        CheckForWaterHeight();
+
+
+        Vector3 movement = new Vector3(
+            moveLR,
+            gravity,
+            moveFB
+        );
+
+
+        // -------------------------
+        // CAMERA ROTATION
+        // -------------------------
+
+        if (webGLRightClickRotation)
+        {
+            if (Mouse.current != null &&
+                Mouse.current.leftButton.isPressed)
+            {
+                CameraRotation(cam, rotX, rotY);
+            }
+        }
+        else
+        {
+            CameraRotation(cam, rotX, rotY);
+        }
+
+
+        // -------------------------
+        // APPLY MOVEMENT
+        // -------------------------
+
+        movement = transform.rotation * movement;
+
+        character.Move(movement * Time.deltaTime);
+    }
+
+
+    void CameraRotation(GameObject cam, float rotX, float rotY)
+    {
+        transform.Rotate(
+            0,
+            rotX * Time.deltaTime,
+            0
+        );
+
+        cam.transform.Rotate(
+            -rotY * Time.deltaTime,
+            0,
+            0
+        );
+    }
 }

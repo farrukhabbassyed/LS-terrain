@@ -47,3 +47,49 @@ The following packages were updated:
   com.unity.test-framework from version 1.4.2 to 1.6.0
   com.unity.timeline from version 1.8.6 to 1.8.12
   com.unity.visualscripting from version 1.9.1 to 1.9.11
+
+=== Fri Aug 28 21:04:40 2026
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.analytics from version 3.6.11 to 3.8.1
+  com.unity.burst from version 1.6.1 to 1.8.29
+  com.unity.ide.rider from version 3.0.7 to 3.0.39
+  com.unity.inputsystem from version 1.2.0 to 1.19.0
+  com.unity.postprocessing from version 3.2.0 to 3.5.4
+  com.unity.test-framework from version 1.1.29 to 1.6.0
+  com.unity.timeline from version 1.4.8 to 1.8.12
+  com.unity.ugui from version 1.0.0 to 2.0.0
+The following packages were removed:
+  com.unity.textmeshpro@3.0.6
+
+=== Fri Aug 28 21:04:40 2026
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.2d.sprite@1.0.0
+  com.unity.2d.tilemap@1.0.0
+  com.unity.analytics@3.8.1
+  com.unity.burst@1.8.29
+  com.unity.postprocessing@3.5.4
+
+=== Fri Aug 28 21:08:44 2026
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.analytics from version 3.6.11 to 3.8.1
+  com.unity.burst from version 1.6.1 to 1.8.29
+  com.unity.ide.rider from version 3.0.7 to 3.0.39
+  com.unity.inputsystem from version 1.2.0 to 1.19.0
+  com.unity.postprocessing from version 3.2.0 to 3.5.4
+  com.unity.test-framework from version 1.1.29 to 1.6.0
+  com.unity.timeline from version 1.4.8 to 1.8.12
+  com.unity.ugui from version 1.0.0 to 2.0.0
+The following packages were removed:
+  com.unity.textmeshpro@3.0.6
